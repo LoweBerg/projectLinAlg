@@ -138,15 +138,36 @@ print("Coefficients:", cofs2)
 
 print("Data set 3")
 cofs3 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 1]), xtol=tol)
-print("Coefficients:", cofs2)
+print("Coefficients:", cofs3)
 
 print("Data set 4")
 cofs4 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 2]), xtol=tol)
-print("Coefficients:", cofs2)
+print("Coefficients:", cofs4)
 
 fig, axs = plt.subplots(2, 2)
 
-axs[0, 0].scatter(X1, Y1)
-axs[0, 0].plot(X1, cofs1[0]*X1+cofs1[1]) # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
+# top left plot
+axs[0, 0].scatter(X1, Y1, color ='pink')
+axs[0, 0].plot(X1, cofs1[0]*X1+cofs1[1], color = 'magenta') # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
+axs[0, 0].set_title("Data set 1")
 
+# top right plot
+axs[0, 1].scatter(X2, Y2[:, 0], color = 'lightgreen')       # why do we have to crop Y like this for 2-4 but not 1 me no comprendo
+axs[0, 1].plot(X2, cofs2[0]*X2+cofs2[1], color = 'green')
+axs[0, 1].set_title("Data set 2")
+
+# bottom left plot
+axs[1, 0].scatter(X2, Y2[:, 1], color = 'lavender')
+axs[1, 0].plot(X2, cofs3[0]*X2+cofs3[1], color = 'purple')
+axs[1, 0].set_title("Data set 3")
+
+# bottom right plot
+axs[1, 1].scatter(X2, Y2[:, 2], color = 'lightblue')
+axs[1, 1].plot(X2, cofs4[0]*X2+cofs4[1], color = 'blue')
+axs[1, 1].set_title("Data set 4")
+
+for ax in axs.flat:
+    ax.set(xlabel = 'x', ylabel = 'y')
+
+fig.tight_layout()
 plt.show()
