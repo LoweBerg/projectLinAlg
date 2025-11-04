@@ -101,13 +101,13 @@ print(v3[2])
 print("-"*20)
 # q iterations
 print("q0 =", np.inner(np.inner(a, A), a))
-qrecurrence(a, A, 100)
+qrecurrence(a, A, 100)                      # converges to eigenvalue 4
 print("-")
 print("q0 =", np.inner(np.inner(b, A), b))
-qrecurrence(b, A, 100)
+qrecurrence(b, A, 100)                      # converges to eigenvalue 4
 print("-")
 print("q0 =", np.inner(np.inner(c, A), c))
-qrecurrence(c, A, 100)
+qrecurrence(c, A, 100)                      # converges to eigenvalue 4
 print("-")
 
 print("-"*20)
@@ -145,3 +145,5 @@ plt.xlabel("Epsilon")
 plt.legend()
 
 plt.show()
+
+# can see in the plot that v always converges faster than q
