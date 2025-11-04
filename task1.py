@@ -88,7 +88,7 @@ Y2 = np.array([
 ])
 
 
-#dosent work cuz fmin can't solve for two variables
+# dosent work cuz fmin can't solve for two variables
 """min = []
 for i in range(len(X)):
     min.append(fmin(lambda a, b: np.linalg.norm(a*X[i] + b - Y[i]), x0 = 0)) 
@@ -116,13 +116,37 @@ print(var3)
 print(var4)
 '''
 
+tol = 10**-6
 
-def func(v: np.ndarray):
-    yhatt = v[0] * x + v[1] * np.ones(20)
+
+def func(v: np.ndarray, *args):
+    x = args[0]
+    y = args[1]
+    yhatt = v[0] * x + v[1] * np.ones(np.shape(x)[0])
     kost = np.linalg.norm(yhatt - y)
     return kost
 
-x = X1
-y = Y1
-cofs = fmin(func, x0=np.array([1, 1]), xtol=0.000001)
-print("Coefficients:", cofs)  #  Coefficients: [0.97754289 1.07934658]
+
+print("Data set 1")
+cofs1 = fmin(func, x0=np.array([1, 1]), args=(X1, Y1), xtol=tol)
+print("Coefficients:", cofs1)  # Coefficients: [0.97754289 1.07934658]
+
+
+print("Data set 2")
+cofs2 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 0]), xtol=tol)
+print("Coefficients:", cofs2)
+
+print("Data set 3")
+cofs3 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 1]), xtol=tol)
+print("Coefficients:", cofs2)
+
+print("Data set 4")
+cofs4 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 2]), xtol=tol)
+print("Coefficients:", cofs2)
+
+fig, axs = plt.subplots(2, 2)
+
+axs[0, 0].scatter(X1, Y1)
+axs[0, 0].plot(X1, cofs1[0]*X1+cofs1[1]) # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
+
+plt.show()
