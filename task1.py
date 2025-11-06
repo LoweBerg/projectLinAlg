@@ -117,23 +117,23 @@ print("Coefficients:", cofs4)
 fig, axs = plt.subplots(2, 2)
 
 # top left plot
-axs[0, 0].scatter(X1, Y1, color='pink', label='y')
-axs[0, 0].plot(X1, cofs1[0]*X1+cofs1[1], color='magenta', label='yhat(fmin)')  # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
+axs[0, 0].scatter(X1, Y1, color='lightblue', label='y')
+axs[0, 0].plot(X1, cofs1[0]*X1+cofs1[1], color='red', label='yhat(fmin)')  # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
 axs[0, 0].set_title("Data set 1")
 
 # top right plot
-axs[0, 1].scatter(X2, Y2[:, 0], color='lightgreen', label='y')  # why do we have to crop Y like this for 2-4 but not 1 me no comprendo
-axs[0, 1].plot(X2, cofs2[0]*X2+cofs2[1], color='green', label='yhat(fmin)')
+axs[0, 1].scatter(X2, Y2[:, 0], color='lightblue', label='y')  # why do we have to crop Y like this for 2-4 but not 1 me no comprendo
+axs[0, 1].plot(X2, cofs2[0]*X2+cofs2[1], color='red', label='yhat(fmin)')
 axs[0, 1].set_title("Data set 2")
 
 # bottom left plot
-axs[1, 0].scatter(X2, Y2[:, 1], color='lavender', label='y')
-axs[1, 0].plot(X2, cofs3[0]*X2+cofs3[1], color='purple', label='yhat(fmin)')
+axs[1, 0].scatter(X2, Y2[:, 1], color='lightblue', label='y')
+axs[1, 0].plot(X2, cofs3[0]*X2+cofs3[1], color='red', label='yhat(fmin)')
 axs[1, 0].set_title("Data set 3")
 
 # bottom right plot
 axs[1, 1].scatter(X2, Y2[:, 2], color='lightblue', label='y')
-axs[1, 1].plot(X2, cofs4[0]*X2+cofs4[1], color='blue', label='yhat(fmin)')
+axs[1, 1].plot(X2, cofs4[0]*X2+cofs4[1], color='red', label='yhat(fmin)')
 axs[1, 1].set_title("Data set 4")
 
 for ax in axs.flat:
@@ -149,13 +149,13 @@ P3 = gen_p(X2, Y2[:, 1], cofs3)
 P4 = gen_p(X2, Y2[:, 2], cofs4)
 
 # top left plot
-axs[0, 0].scatter(X1, np.dot(P1, Y1), color='magenta', marker='+')
+axs[0, 0].scatter(X1, np.dot(P1, Y1), color='blue', marker='+')
 
 # top right plot
-axs[0, 1].scatter(X2, np.dot(P2, Y2[:, 0]), color='green', marker='+')
+axs[0, 1].scatter(X2, np.dot(P2, Y2[:, 0]), color='blue', marker='+')
 
 # bottom left plot
-axs[1, 0].scatter(X2, np.dot(P3, Y2[:, 1]), color='purple', marker='+')
+axs[1, 0].scatter(X2, np.dot(P3, Y2[:, 1]), color='blue', marker='+')
 
 # bottom right plot
 axs[1, 1].scatter(X2, np.dot(P4, Y2[:, 2]), color='blue', marker='+')
@@ -166,19 +166,16 @@ R3 = 2*P3 - np.eye(11)
 R4 = 2*P4 - np.eye(11)
 
 # top left plot
-axs[0, 0].scatter(X1, np.dot(R1, Y1), color='magenta')
+axs[0, 0].scatter(X1, np.dot(R1, Y1), color='lavender')
 
 # top right plot
-axs[0, 1].scatter(X2, np.dot(R2, Y2[:, 0]), color='green')
+axs[0, 1].scatter(X2, np.dot(R2, Y2[:, 0]), color='lavender')
 
 # bottom left plot
-axs[1, 0].scatter(X2, np.dot(R3, Y2[:, 1]), color='purple')
+axs[1, 0].scatter(X2, np.dot(R3, Y2[:, 1]), color='lavender')
 
 # bottom right plot
-axs[1, 1].scatter(X2, np.dot(R4, Y2[:, 2]), color='blue')
-
-plt.show()
-
+axs[1, 1].scatter(X2, np.dot(R4, Y2[:, 2]), color='lavender')
 
 # create surface plot
 
@@ -194,9 +191,9 @@ for i in range(len(rand_a)):
         points[i, j] = err      # (np.array([rand_a[i], rand_b[j], err]))
 
 
-ax = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
-ax.scatter3D(cofs1[0], cofs1[1], np.array([1]))          # vilket y-värde ska vi ha???
-ax.plot_surface(rand_a, rand_b, points)  # argument must be 2d
+#ax = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
+#ax.scatter3D(cofs1[0], cofs1[1], np.array([1]))          # vilket y-värde ska vi ha???
+#ax.plot_surface(rand_a, rand_b, points)  # argument must be 2d
 plt.show()
 
 
