@@ -23,26 +23,26 @@ X1 = np.array([-5.0,
                4.473684210526315,
                5.0])
 
-Y1 = np.array([-3.8214130281395384
-    , -3.4193887110325143
-    , -2.5661253640159583
-    , -1.775098291142789
-    , -1.0856313118090484
-    , -2.281145922997222
-    , -1.0925080217035064
-    , 0.04196956346189595
-    , -0.7073390282943666
-    , 1.010429892882658
-    , 2.237370616506767
-    , 1.9245548728985702
-    , 2.79729220264899
-    , 2.3823270467509614
-    , 4.061315773975142
-    , 3.0683027990952865
-    , 3.936954278819055
-    , 4.568106293943185
-    , 5.778550917642228
-    , 6.528404914496181])
+Y1 = np.array([-3.8214130281395384,
+               -3.4193887110325143,
+               -2.5661253640159583,
+               -1.775098291142789,
+               -1.0856313118090484,
+               -2.281145922997222,
+               -1.0925080217035064,
+               0.04196956346189595,
+               -0.7073390282943666,
+               1.010429892882658,
+               2.237370616506767,
+               1.9245548728985702,
+               2.79729220264899,
+               2.3823270467509614,
+               4.061315773975142,
+               3.0683027990952865,
+               3.936954278819055,
+               4.568106293943185,
+               5.778550917642228,
+               6.528404914496181])
 
 
 X2 = np.array([
@@ -59,20 +59,6 @@ X2 = np.array([
     5.0
 ])
 
-"""
-x,y1,y2,y3
-10.0, 8.04, 9.14, 7.46
-8.0, 6.95, 8.14, 6.77
-13.0, 7.58, 8.74, 12.74
-9.0, 8.81, 8.77, 7.11
-11.0, 8.33, 9.26, 7.81
-14.0, 9.96, 8.1, 8.84
-6.0, 7.24, 6.13, 6.08
-4.0, 4.26, 3.1, 5.39
-12.0, 10.84, 9.13, 8.15
-7.0, 4.82, 7.26, 6.42
-5.0, 5.68, 4.74, 5.73
-"""
 Y2 = np.array([
     [8.04, 9.14, 7.46],
     [6.95, 8.14, 6.77],
@@ -87,35 +73,6 @@ Y2 = np.array([
     [5.68, 4.74, 5.73]
 ])
 
-
-# dosent work cuz fmin can't solve for two variables
-"""min = []
-for i in range(len(X)):
-    min.append(fmin(lambda a, b: np.linalg.norm(a*X[i] + b - Y[i]), x0 = 0)) 
-"""
-
-''' 
-X_1 = []
-for i in range(len(X)):
-    X_1.append(X[i]**2)
-
-XY_1 = []
-for i in range(len(X)):
-    XY_1.append(X[i]*Y[i])
-
-var1 = sum(X)
-var2 = sum(Y)
-var3 = sum(X_1)
-var4 = sum(XY_1)
-
-def f(a):
-    a*var3 + ((var2 - a*var1)/20)*var1 - var4
-print(var1)
-print(var2)
-print(var3)
-print(var4)
-'''
-
 tol = 10**-6
 
 
@@ -127,10 +84,23 @@ def func(v: np.ndarray, *args):
     return kost
 
 
+def gen_p(x, y, cofs):
+    yhatt = cofs[0] * x + cofs[1] * np.ones(np.size(x))
+
+    A = np.outer(yhatt, yhatt.T)
+    B = np.outer(y, yhatt.T)
+
+    P = np.dot(A, np.linalg.pinv(B))
+
+    print("Is projection? :", np.allclose(np.dot(P, P), P, atol=10 ** -1))
+    print("Is orthogonal? :", np.allclose(P, P.T))
+
+    return P
+
+
 print("Data set 1")
 cofs1 = fmin(func, x0=np.array([1, 1]), args=(X1, Y1), xtol=tol)
 print("Coefficients:", cofs1)  # Coefficients: [0.97754289 1.07934658]
-
 
 print("Data set 2")
 cofs2 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 0]), xtol=tol)
@@ -147,27 +117,64 @@ print("Coefficients:", cofs4)
 fig, axs = plt.subplots(2, 2)
 
 # top left plot
-axs[0, 0].scatter(X1, Y1, color ='pink')
-axs[0, 0].plot(X1, cofs1[0]*X1+cofs1[1], color = 'magenta') # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
+axs[0, 0].scatter(X1, Y1, color='pink', label='y')
+axs[0, 0].plot(X1, cofs1[0]*X1+cofs1[1], color='magenta', label='yhat(fmin)')  # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
 axs[0, 0].set_title("Data set 1")
 
 # top right plot
-axs[0, 1].scatter(X2, Y2[:, 0], color = 'lightgreen')       # why do we have to crop Y like this for 2-4 but not 1 me no comprendo
-axs[0, 1].plot(X2, cofs2[0]*X2+cofs2[1], color = 'green')
+axs[0, 1].scatter(X2, Y2[:, 0], color='lightgreen', label='y')  # why do we have to crop Y like this for 2-4 but not 1 me no comprendo
+axs[0, 1].plot(X2, cofs2[0]*X2+cofs2[1], color='green', label='yhat(fmin)')
 axs[0, 1].set_title("Data set 2")
 
 # bottom left plot
-axs[1, 0].scatter(X2, Y2[:, 1], color = 'lavender')
-axs[1, 0].plot(X2, cofs3[0]*X2+cofs3[1], color = 'purple')
+axs[1, 0].scatter(X2, Y2[:, 1], color='lavender', label='y')
+axs[1, 0].plot(X2, cofs3[0]*X2+cofs3[1], color='purple', label='yhat(fmin)')
 axs[1, 0].set_title("Data set 3")
 
 # bottom right plot
-axs[1, 1].scatter(X2, Y2[:, 2], color = 'lightblue')
-axs[1, 1].plot(X2, cofs4[0]*X2+cofs4[1], color = 'blue')
+axs[1, 1].scatter(X2, Y2[:, 2], color='lightblue', label='y')
+axs[1, 1].plot(X2, cofs4[0]*X2+cofs4[1], color='blue', label='yhat(fmin)')
 axs[1, 1].set_title("Data set 4")
 
 for ax in axs.flat:
-    ax.set(xlabel = 'x', ylabel = 'y')
+    ax.set(xlabel='x', ylabel='y')
 
 fig.tight_layout()
+
+# second part
+
+P1 = gen_p(X1, Y1, cofs1)
+P2 = gen_p(X2, Y2[:, 0], cofs2)
+P3 = gen_p(X2, Y2[:, 1], cofs3)
+P4 = gen_p(X2, Y2[:, 2], cofs4)
+
+# top left plot
+axs[0, 0].scatter(X1, np.dot(P1, Y1), color='magenta', marker='+')
+
+# top right plot
+axs[0, 1].scatter(X2, np.dot(P2, Y2[:, 0]), color='green', marker='+')
+
+# bottom left plot
+axs[1, 0].scatter(X2, np.dot(P3, Y2[:, 1]), color='purple', marker='+')
+
+# bottom right plot
+axs[1, 1].scatter(X2, np.dot(P4, Y2[:, 2]), color='blue', marker='+')
+
+R1 = 2*P1 - np.eye(20)
+R2 = 2*P2 - np.eye(11)
+R3 = 2*P3 - np.eye(11)
+R4 = 2*P4 - np.eye(11)
+
+# top left plot
+axs[0, 0].scatter(X1, np.dot(R1, Y1), color='magenta')
+
+# top right plot
+axs[0, 1].scatter(X2, np.dot(R2, Y2[:, 0]), color='green')
+
+# bottom left plot
+axs[1, 0].scatter(X2, np.dot(R3, Y2[:, 1]), color='purple')
+
+# bottom right plot
+axs[1, 1].scatter(X2, np.dot(R4, Y2[:, 2]), color='blue')
+
 plt.show()
