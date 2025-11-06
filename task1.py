@@ -97,6 +97,17 @@ def gen_p(x, y, cofs):
 
     return P
 
+def Nom_eq (x: np.array, y: np.array):
+    A_t = np.array([x, np.ones(len(x))])
+    A = np.transpose(A_t)
+    return np.matmul(np.linalg.inv(np.matmul(A_t, A)), np.matmul(A_t, y))
+
+def f_err(x, y):
+    for i in range(len(rand_a)):
+        for j in range(len(rand_b)):
+            points[i, j] = func(np.array([rand_a[i], rand_b[j]]), x, y)
+            print(points[i, j])
+    return points
 
 print("Data set 1")
 cofs1 = fmin(func, x0=np.array([1, 1]), args=(X1, Y1), xtol=tol)
@@ -115,11 +126,6 @@ cofs4 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 2]), xtol=tol)
 print("Coefficients:", cofs4)
 
 # solving using numpy and normal equations
-def Nom_eq (x: np.array, y: np.array):
-    A_t = np.array([x, np.ones(len(x))])
-    A = np.transpose(A_t)
-    return np.matmul(np.linalg.inv(np.matmul(A_t, A)), np.matmul(A_t, y))
-
 print("Coefficients solved with numpy: ", Nom_eq(X1, Y1))
 
 # plotting linear regression
@@ -154,13 +160,6 @@ fig.tight_layout()
 rand_a = np.linspace(-5, 5, 20)
 rand_b = np.linspace(-5, 5, 20)
 points = np.zeros((20, 20))
-
-def f_err(x, y):
-    for i in range(len(rand_a)):
-        for j in range(len(rand_b)):
-            points[i, j] = func(np.array([rand_a[i], rand_b[j]]), x, y)
-            print(points[i, j])
-    return points
 
 b, a = np.meshgrid(rand_a, rand_a)
 
@@ -229,4 +228,5 @@ axs[1, 0].scatter(X2, np.dot(R3, Y2[:, 1]), color='lavender')
 
 # bottom right plot
 axs[1, 1].scatter(X2, np.dot(R4, Y2[:, 2]), color='lavender')
+
 
