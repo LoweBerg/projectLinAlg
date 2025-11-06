@@ -171,3 +171,25 @@ for ax in axs.flat:
 
 fig.tight_layout()
 plt.show()
+
+
+# create surface plot
+
+# data set 1
+rand_a = np.linspace(-5, 5, 20)
+rand_b = np.linspace(-5, 5, 20)
+
+# err = []
+points = np.zeros((20, 20))
+for i in range(len(rand_a)):
+    for j in range(len(rand_b)):
+        err = np.linalg.norm(rand_a[i]*X1[i] + rand_b[j] - Y1[i])
+        points[i, j] = err      # (np.array([rand_a[i], rand_b[j], err]))
+
+
+ax = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
+ax.scatter3D(cofs1[0], cofs1[1], np.array([1]))          # vilket y-värde ska vi ha???
+ax.plot_surface(rand_a, rand_b, points)  # argument must be 2d
+plt.show()
+
+
