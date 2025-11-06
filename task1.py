@@ -157,43 +157,6 @@ for ax in axs.flat:
 
 fig.tight_layout()
 
-# create surface plot
-rand_a = np.linspace(-5, 5, 20)
-rand_b = np.linspace(-5, 5, 20)
-points = np.zeros((20, 20))
-
-b, a = np.meshgrid(rand_a, rand_a)
-
-
-#dataset 1
-ax = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
-ax.plot(cofs1[0], cofs1[1], np.linspace(-5, 100, 100), color = 'red')
-ax.plot_surface(a, b, f_err(X1, Y1), alpha = 0.5, edgecolor = 'blue', color = 'lightblue')
-ax.set_title('Data set 1')
-plt.show()
-
-#dataset 2
-ax = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
-ax.plot(cofs2[0], cofs2[1], np.linspace(-5, 100, 100), color = 'red')
-ax.plot_surface(a, b, f_err(X2, Y2[:, 0]), alpha = 0.5, edgecolor = 'blue', color = 'lightblue')
-ax.set_title('Data set 2')
-plt.show()
-
-#dataset 3
-ax = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
-ax.plot(cofs3[0], cofs3[1], np.linspace(-5, 100, 100), color = 'red')
-ax.plot_surface(a, b, f_err(X2, Y2[:, 1]), alpha = 0.5, edgecolor = 'blue', color = 'lightblue')
-ax.set_title('Data set 3')
-plt.show()
-
-# dataset 4
-ax = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
-ax.plot(cofs4[0], cofs4[1], np.linspace(-5, 100, 100), color = 'red')
-ax.plot_surface(a, b, f_err(X2, Y2[:, 2]), alpha = 0.5, edgecolor = 'blue', color = 'lightblue')
-ax.set_title('Data set 4')
-plt.show()
-
-
 # second part
 
 P1 = gen_p(X1, Y1, cofs1)
@@ -230,5 +193,44 @@ axs[1, 0].scatter(X2, np.dot(R3, Y2[:, 1]), color='lavender')
 # bottom right plot
 axs[1, 1].scatter(X2, np.dot(R4, Y2[:, 2]), color='lavender')
 
+plt.show()
+
+
+# create surface plot (subtask 3)
+rand_a = np.linspace(-5, 5, 20)
+rand_b = np.linspace(-5, 5, 20)
+points = np.zeros((20, 20))
+
+b, a = np.meshgrid(rand_a, rand_a)
+
+#dataset 1
+ax2 = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
+ax2.plot(cofs1[0], cofs1[1], np.linspace(-5, 100, 100), color = 'red', label = 'Calculated coefficients')
+ax2.plot_surface(a, b, f_err(X1, Y1), alpha = 0.5, edgecolor = 'blue', color = 'lightblue')
+ax2.set_title('Data set 1')
+plt.legend()
+plt.show()
+
+#dataset 2
+ax2 = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
+ax2.plot(cofs2[0], cofs2[1], np.linspace(-5, 100, 100), color = 'red', label = 'Calculated coefficients')
+ax2.plot_surface(a, b, f_err(X2, Y2[:, 0]), alpha = 0.5, edgecolor = 'blue', color = 'lightblue')
+ax2.set_title('Data set 2')
+plt.legend()
+plt.show()
+
+#dataset 3
+ax2 = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
+ax2.plot(cofs3[0], cofs3[1], np.linspace(-5, 100, 100), color = 'red', label = 'Calculated coefficients')
+ax2.plot_surface(a, b, f_err(X2, Y2[:, 1]), alpha = 0.5, edgecolor = 'blue', color = 'lightblue')
+ax2.set_title('Data set 3')
+plt.legend()
+plt.show()
+
+# dataset 4
+ax2 = plt.subplot(projection = '3d', xlabel = 'a', ylabel = 'b', zlabel='y')
+ax2.plot(cofs4[0], cofs4[1], np.linspace(-5, 100, 100), color = 'red', label = 'Calculated coefficients')
+ax2.plot_surface(a, b, f_err(X2, Y2[:, 2]), alpha = 0.5, edgecolor = 'blue', color = 'lightblue')
+ax2.set_title('Data set 4')
 plt.legend()
 plt.show()
