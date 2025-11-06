@@ -111,22 +111,23 @@ def f_err(x, y):
 
 print("Data set 1")
 cofs1 = fmin(func, x0=np.array([1, 1]), args=(X1, Y1), xtol=tol)
-print("Coefficients:", cofs1)  # Coefficients: [0.97754289 1.07934658]
+print("fmin coefficients:", cofs1)  # Coefficients: [0.97754289 1.07934658]
+print("Normal eqs coefficients:", Nom_eq(X1, Y1))
 
 print("Data set 2")
 cofs2 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 0]), xtol=tol)
-print("Coefficients:", cofs2)
+print("fmin coefficients:", cofs2)
+print("Normal eqs coefficients:", Nom_eq(X2, Y2[:, 0]))
 
 print("Data set 3")
 cofs3 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 1]), xtol=tol)
-print("Coefficients:", cofs3)
+print("fmin coefficients:", cofs3)
+print("Normal eqs coefficients:", Nom_eq(X2, Y2[:, 1]))
 
 print("Data set 4")
 cofs4 = fmin(func, x0=np.array([1, 1]), args=(X2, Y2[:, 2]), xtol=tol)
-print("Coefficients:", cofs4)
-
-# solving using numpy and normal equations
-print("Coefficients solved with numpy: ", Nom_eq(X1, Y1))
+print("fmin coefficients:", cofs4)
+print("Normal eqs coefficients:", Nom_eq(X2, Y2[:, 2]))
 
 # plotting linear regression
 fig, axs = plt.subplots(2, 2)
@@ -218,7 +219,7 @@ R3 = 2*P3 - np.eye(11)
 R4 = 2*P4 - np.eye(11)
 
 # top left plot
-axs[0, 0].scatter(X1, np.dot(R1, Y1), color='lavender')
+axs[0, 0].scatter(X1, np.dot(R1, Y1), color='lavender', label="bla")
 
 # top right plot
 axs[0, 1].scatter(X2, np.dot(R2, Y2[:, 0]), color='lavender')
@@ -229,4 +230,5 @@ axs[1, 0].scatter(X2, np.dot(R3, Y2[:, 1]), color='lavender')
 # bottom right plot
 axs[1, 1].scatter(X2, np.dot(R4, Y2[:, 2]), color='lavender')
 
-
+plt.legend()
+plt.show()
