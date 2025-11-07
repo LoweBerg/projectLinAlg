@@ -106,7 +106,6 @@ def f_err(x, y):
     for i in range(len(rand_a)):
         for j in range(len(rand_b)):
             points[i, j] = func(np.array([rand_a[i], rand_b[j]]), x, y)
-            print(points[i, j])
     return points
 
 print("Data set 1")
